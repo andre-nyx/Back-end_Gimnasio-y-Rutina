@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ rutina.titulo }}</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'home' %}">Inicio</a>
+        <a href="{% url 'rutinas_publicas' %}">Rutinas</a>
+    </nav>
+
+    <h1>{{ rutina.titulo }}</h1>
+    <p><strong>Entrenador:</strong> {{ rutina.entrenador.username }}</p>
+    <p><strong>Disciplina:</strong> {{ rutina.disciplina.nombre }}</p>
+    <p><strong>Nivel:</strong> {{ rutina.get_nivel_display }}</p>
+    <p><strong>Duración:</strong> {{ rutina.duracion_minutos }} minutos</p>
+    <p><strong>Cupos:</strong> {{ rutina.cupos }}</p>
+
+    <h2>Descripción</h2>
+    <p>{{ rutina.descripcion }}</p>
+
+    <h2>Equipamiento</h2>
+    {% if rutina.equipamiento.all %}
+        <ul>
+            {% for item in rutina.equipamiento.all %}
+                <li>{{ item.nombre }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No requiere equipamiento.</p>
+    {% endif %}
+</body>
+</html>
