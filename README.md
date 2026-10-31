@@ -1,7 +1,9 @@
 Back-end Gimnasio y Rutina 🏋️‍♂️💪
+
 Proyecto de gestión de gimnasio, rutinas e integración con desarrollo de backend y soluciones 
 
 👥 Integrantes y Distribución de Hitos
+
 Hito 1: Configuración del Proyecto y Modelado Base
 Responsable: Javiera
 Descripción: Creación del proyecto Django (gimnasio_project) y la aplicación website. 
