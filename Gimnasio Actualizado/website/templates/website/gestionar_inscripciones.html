@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar Inscripciones</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #111827; color: #fff; margin: 0; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; background: rgba(15, 23, 42, 0.85); padding: 30px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); }
+        h1 { color: #f4f6fb; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { background: #0d7a76; color: #fff; }
+        .btn { padding: 6px 12px; border-radius: 6px; text-decoration: none; font-weight: bold; color: #fff; display: inline-block; margin-right: 5px; }
+        .btn-aprobar { background: #10b981; }
+        .btn-rechazar { background: #ef4444; }
+        .btn-volver { display: inline-block; margin-bottom: 20px; color: #50eacc; text-decoration: none; }
+        .messages { list-style: none; padding: 0; margin-bottom: 20px; }
+        .messages li { background: #10b981; color: white; padding: 10px; border-radius: 6px; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="{% url 'home' %}" class="btn-volver">← Volver al Inicio</a>
+        <h1>Gestión de Solicitudes de Inscripción</h1>
+
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {% if inscripciones %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rutina</th>
+                        <th>Socio</th>
+                        <th>Comentario</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for inscripcion in inscripciones %}
+                        <tr>
+                            <td>{{ inscripcion.rutina.titulo }}</td>
+                            <td>{{ inscripcion.socio.username }}</td>
+                            <td>{{ inscripcion.comentario|default:"Sin comentario" }}</td>
+                            <td><strong>{{ inscripcion.get_estado_display }}</strong></td>
+                            <td>
+                                {% if inscripcion.estado == 'pendiente' %}
+                                    <form method="post" action="{% url 'actualizar_estado_inscripcion' inscripcion.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" name="estado" value="confirmada">Aprobar</button>
+                                        <button type="submit" name="estado" value="rechazada">Rechazar</button>
+                                    </form>
+                                {% else %}
+    <span>Procesada</span>
+{% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay solicitudes de inscripción para tus rutinas por el momento.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

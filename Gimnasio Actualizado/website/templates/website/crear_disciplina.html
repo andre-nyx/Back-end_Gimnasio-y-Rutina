@@ -1,0 +1,26 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Disciplina</title>
+</head>
+<body>
+    <h2>Crear nueva disciplina</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <label for="nombre">Nombre de la disciplina:</label>
+        <input type="text" id="nombre" name="nombre" maxlength="50" required>
+        <button type="submit">Guardar disciplina</button>
+    </form>
+
+    <a href="{% url 'crear_rutina' %}">Volver a crear rutina</a>
+</body>
+</html>

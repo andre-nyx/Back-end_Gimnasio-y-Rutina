@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rutinas públicas</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #dfe4dc;
+            color: #17323d;
+        }
+
+        .page {
+            max-width: 1220px;
+            margin: 0 auto;
+            padding: 28px 18px 36px;
+        }
+
+        .container {
+            background: rgba(255,255,255,0.16);
+            border: 2px solid rgba(24, 43, 52, 0.22);
+            border-radius: 12px;
+            padding: 22px 22px 28px;
+        }
+
+        .header-idea {
+            background: linear-gradient(180deg, #1b9fe4 0%, #0f8fdf 100%);
+            border-radius: 16px;
+            border: 4px solid rgba(20, 30, 39, 0.96);
+            box-shadow: 0 8px 0 rgba(20, 30, 39, 0.18);
+            padding: 18px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .header-idea h1 {
+            margin: 0;
+            color: #f7f7f7;
+            font-size: clamp(2.6rem, 5vw, 5rem);
+            letter-spacing: 0.02em;
+            line-height: 1.08;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: flex-end;
+            margin: 18px 0 16px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .nav a {
+            display: inline-block;
+            background: linear-gradient(180deg, #2bc0a5 0%, #1ca38f 100%);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 24px;
+            min-width: 138px;
+            border-radius: 12px;
+            font-weight: 800;
+            text-align: center;
+            box-shadow: 0 4px 0 rgba(15, 46, 41, 0.18);
+            font-size: 1.05rem;
+        }
+
+        .toolbar {
+            margin: 6px 0 26px;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            background: transparent;
+            border: 3px solid rgba(18, 33, 44, 0.9);
+            border-radius: 16px;
+            padding: 8px 12px 8px 18px;
+        }
+
+        .search-box input {
+            flex: 1;
+            border: 0;
+            background: transparent;
+            color: #1b2d36;
+            font-size: 1.05rem;
+            padding: 12px 0;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: #51656f;
+            opacity: 1;
+        }
+
+        .search-box button {
+            background: linear-gradient(180deg, #25b59a 0%, #1d9d88 100%);
+            color: #fff;
+            border: 0;
+            border-radius: 12px;
+            padding: 12px 26px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 rgba(15, 46, 41, 0.18);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 20px;
+            margin-top: 14px;
+        }
+
+        .routine-card {
+            background: rgba(248, 251, 249, 0.28);
+            border: 3px solid rgba(18, 33, 44, 0.9);
+            border-radius: 18px;
+            padding: 18px 18px 14px;
+            display: flex;
+            flex-direction: column;
+            min-height: 420px;
+            box-shadow: 0 2px 0 rgba(18, 33, 44, 0.12);
+        }
+
+        .routine-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+        }
+
+        .routine-type {
+            font-size: 0.86rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            color: #1a7d7b;
+            text-transform: uppercase;
+        }
+
+        .routine-level {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 12px;
+            border-radius: 999px;
+            background: rgba(127, 196, 191, 0.30);
+            color: #1a7d7b;
+            font-weight: 700;
+            font-size: 0.82rem;
+            border: 1px solid rgba(26, 125, 123, 0.26);
+        }
+
+        .routine-card h2 {
+            margin: 0 0 18px;
+            color: #1b2d36;
+            font-size: 1.08rem;
+            line-height: 1.3;
+            font-weight: 700;
+        }
+
+        .routine-card .title-main {
+            font-size: clamp(1.3rem, 2vw, 2.1rem);
+            line-height: 1.3;
+            font-weight: 700;
+            margin: 0 0 16px;
+            color: #1a2d34;
+        }
+
+        .routine-card .title-main strong {
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .exercise-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .exercise-list li {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: #123746;
+            padding: 4px 0;
+        }
+
+        .exercise-list li::before {
+            content: "(";
+            color: #1c7d7e;
+            font-size: 1.3rem;
+            line-height: 1;
+            font-weight: 800;
+        }
+
+        .exercise-list li::after {
+            content: ")";
+            color: #1c7d7e;
+            font-size: 1.3rem;
+            line-height: 1;
+            font-weight: 800;
+        }
+
+        .detail-link {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 11px 18px;
+            background: #1ca38f;
+            color: white;
+            text-decoration: none;
+            border-radius: 10px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .detail-link:hover {
+            background: #168574;
+        }
+
+        .routine-footer {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 12px;
+            padding-top: 18px;
+            font-weight: 700;
+            color: #183a42;
+        }
+
+        .routine-footer .value {
+            font-weight: 800;
+            color: #1c3d48;
+            margin-left: 6px;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            margin-top: 20px;
+            font-weight: 700;
+            color: #1f2937;
+            flex-wrap: wrap;
+        }
+
+        .pagination a {
+            color: #0f8fdf;
+            text-decoration: none;
+        }
+
+        @media (max-width: 900px) {
+            .cards-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .page {
+                padding: 20px 12px 30px;
+            }
+
+            .container {
+                padding: 16px 14px 20px;
+            }
+
+            .header-idea h1 {
+                font-size: 2.5rem;
+            }
+
+            .topbar {
+                justify-content: center;
+            }
+
+            .nav {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav a {
+                flex: 1 1 160px;
+            }
+
+            .search-box {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px 14px;
+            }
+
+            .search-box button {
+                width: 100%;
+            }
+
+            .cards-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="container">
+            <div class="header-idea">
+                <h1>Ideas para crear rutinas públicas</h1>
+            </div>
+
+            <div class="topbar">
+                <nav class="nav" aria-label="Navegación principal">
+                    <a href="{% url 'home' %}">Inicio</a>
+                    <a href="{% url 'rutinas_publicas' %}">Rutinas</a>
+                </nav>
+            </div>
+            <div class="toolbar">
+                <form method="GET" class="search-box">
+                    <input
+                        type="text"
+                        name="q"
+                        placeholder="Buscar por título o descripción..."
+                        value="{{ query }}"
+                    >
+
+                    <select name="disciplina">
+                        <option value="">Todas las disciplinas</option>
+                        {% for disc in disciplinas %}
+                            <option value="{{ disc.id }}"
+                                {% if disciplina_seleccionada == disc.id|stringformat:"s" %}selected{% endif %}>
+                                {{ disc.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+
+                    <button type="submit">Buscar</button>
+                </form>
+            </div>
+
+            <div class="cards-grid">
+            {% for rutina in rutinas %}
+                <article class="routine-card">
+                    <div class="routine-header">
+                        <span class="routine-type">
+                            {% if rutina.disciplina %}
+                                {{ rutina.disciplina.nombre }}
+                            {% else %}
+                                Sin disciplina
+                            {% endif %}
+                        </span>
+
+                        <span class="routine-level">
+                            {{ rutina.get_nivel_display }}
+                        </span>
+                    </div>
+
+                    <h2 class="title-main">
+                        <strong>{{ rutina.titulo }}</strong>
+                    </h2>
+
+                    <p>{{ rutina.descripcion }}</p>
+
+                    <ul class="exercise-list">
+                        {% for equipo in rutina.equipamiento.all %}
+                            <li>{{ equipo.nombre }}</li>
+                        {% empty %}
+                            <li>Sin equipamiento asociado</li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="routine-footer">
+                        <span>
+                            Cupos:
+                            <span class="value">{{ rutina.cupos }}</span>
+                        </span>
+
+                        <span>
+                            <span class="value">{{ rutina.duracion_minutos }} min</span>
+                        </span>
+                    </div>
+
+                    <p>
+                        Entrenador:
+                        <strong>{{ rutina.entrenador.username }}</strong>
+                    </p>
+                    <a class="detail-link" href="{% url 'rutina_detail' rutina.pk %}">
+                        Ver detalles y solicitar inscripción
+                    </a>
+                </article>
+            {% empty %}
+                <p>No se encontraron rutinas.</p>
+            {% endfor %}
+        </div>
+
+            {% if page_obj.paginator.num_pages > 1 %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?q={{ query|urlencode }}&disciplina={{ disciplina_seleccionada }}&page={{ page_obj.previous_page_number }}">
+                            Anterior
+                        </a>
+                    {% endif %}
+
+                    <span>
+                        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                    </span>
+
+                    {% if page_obj.has_next %}
+                        <a href="?q={{ query|urlencode }}&disciplina={{ disciplina_seleccionada }}&page={{ page_obj.next_page_number }}">
+                            Siguiente
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

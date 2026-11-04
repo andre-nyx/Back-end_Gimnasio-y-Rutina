@@ -1,0 +1,308 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta - Gimnasio</title>
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #111827;
+            color: #fff;
+        }
+
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1800&q=80');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: flex-start;
+            padding: 30px 35px;
+            overflow-y: auto;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.7);
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin: 0 0 18px;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        h3 {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .nav {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 25px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #0d7a76;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            box-shadow: 0 6px 18px rgba(13,122,118,0.35);
+            transition: 0.25s;
+        }
+
+        .btn:hover {
+            filter: brightness(1.06);
+            transform: translateY(-2px);
+        }
+
+        .form-card {
+            width: min(540px, 100%);
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+            margin-bottom: 40px;
+        }
+
+        .form-card label {
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #f4f6fb;
+        }
+
+        .form-card input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .form-card input:focus {
+            outline: none;
+            border-color: #0d7a76;
+        }
+
+        .form-card button[type="submit"] {
+            margin-top: 25px;
+            background: #0d7a76;
+            color: #fff;
+            border: none;
+            padding: 12px 28px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(13,122,118,0.35);
+        }
+
+        .form-card button[type="submit"]:hover {
+            filter: brightness(1.06);
+        }
+
+        .messages {
+            background: rgba(13, 122, 118, 0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #0d7a76;
+        }
+
+        .helptext, .form-card ul {
+            font-size: 0.82rem;
+            color: #94a3b8;
+            margin-top: 4px;
+            padding-left: 15px;
+            line-height: 1.4;
+        }
+
+        .form-links {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .form-links a {
+            color: #50eacc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .form-links a:hover {
+            text-decoration: underline;
+        }
+
+        .errorlist {
+            color: #f87171;
+            list-style: none;
+            padding: 0;
+            margin: 5px 0;
+            font-size: 0.9rem;
+        }
+
+        .messages.error {
+            border-color: #f87171;
+            background: rgba(185, 28, 28, 0.25);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero">
+        <div class="content">
+
+            <h1>Gimnasio y Rutina</h1>
+
+            <nav class="nav">
+                <a class="btn" href="{% url 'home' %}">Inicio</a>
+                <a class="btn" href="{% url 'rutinas_publicas' %}">Rutinas</a>
+                <a class="btn" href="{% url 'mis_rutinas' %}">Mis Rutinas</a>
+
+                <form action="{% url 'logout' %}" method="POST" style="display:inline; margin:0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn" style="background: #b91c1c; border:none; cursor:pointer;">
+                        Cerrar Sesión
+                    </button>
+                </form>
+            </nav>
+
+            <div class="form-card">
+
+                <h2>Mi Cuenta</h2>
+
+                <p><strong>Usuario:</strong> {{ request.user.username }}</p>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="messages {% if message.tags == 'error' %}error{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 20px 0;">
+
+                <h3>Datos personales</h3>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="datos">
+
+                    <label for="first_name">Nombre:</label>
+                    <input
+                        type="text"
+                        id="first_name"
+                        name="first_name"
+                        value="{{ request.user.first_name }}"
+                    >
+
+                    <label for="last_name">Apellido:</label>
+                    <input
+                        type="text"
+                        id="last_name"
+                        name="last_name"
+                        value="{{ request.user.last_name }}"
+                    >
+
+                    <label for="email">Correo electrónico:</label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ request.user.email }}"
+                        required
+                    >
+
+                    <button type="submit">Guardar datos personales</button>
+                </form>
+
+                <hr style="border-color: rgba(255,255,255,0.1); margin: 25px 0;">
+
+                <h3>Cambiar Contraseña</h3>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="accion" value="password">
+
+                    {{ password_form.non_field_errors }}
+
+                    <div>
+                        <label for="{{ password_form.old_password.id_for_label }}">
+                            Contraseña anterior:
+                        </label>
+                        {{ password_form.old_password }}
+                        {{ password_form.old_password.errors }}
+                    </div>
+
+                    <div>
+                        <label for="{{ password_form.new_password1.id_for_label }}">
+                            Nueva contraseña:
+                        </label>
+                        {{ password_form.new_password1 }}
+
+                        {% if password_form.new_password1.help_text %}
+                            <div class="helptext">
+                                {{ password_form.new_password1.help_text|safe }}
+                            </div>
+                        {% endif %}
+
+                        {{ password_form.new_password1.errors }}
+                    </div>
+
+                    <div>
+                        <label for="{{ password_form.new_password2.id_for_label }}">
+                            Confirmación de nueva contraseña:
+                        </label>
+                        {{ password_form.new_password2 }}
+                        <span class="helptext">
+                            Ingrese la misma contraseña nuevamente para verificarla.
+                        </span>
+                        {{ password_form.new_password2.errors }}
+                    </div>
+
+                    <button type="submit">Actualizar Contraseña</button>
+                </form>
+
+                <div class="form-links">
+                    <a href="{% url 'mis_rutinas' %}">Gestionar mis rutinas</a> |
+                    <a href="{% url 'home' %}">Volver al inicio</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+```
